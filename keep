@@ -1,0 +1,13 @@
+- job_template: awx-turnkey-workflow
+  always:
+  - project: awx-turnkey
+    always:
+    - job_template: ansible_fact_collecter
+      success:
+        - job_template: awx-turnkey-create-project-servers
+          success:
+                -job_template: awx-turnkey-on-kubernetes
+                success:
+                        -job_template: awx-turnkey-on-venv
+                        success:
+                               -job_template: awx-turnkey-on-rpm
