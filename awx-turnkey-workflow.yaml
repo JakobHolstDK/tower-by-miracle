@@ -1,9 +1,5 @@
 - job_template: ansible_fact_collecter
-  failure:
-  - inventory_source: awx-turnkey
   success:
   - project: awx-turnkey
     always:
-    - job_template: 
-      success:
-      - job_template: Scan localhost
+      - job_template: awx-turnkey-on-venv
