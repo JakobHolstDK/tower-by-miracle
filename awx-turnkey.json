@@ -9,8 +9,6 @@
   awx_install_cluster_host: "localhost",
   nginx_disable_https: "True",
   nginx_disable_hsts: "True",
-  nginx_http_port: "80"
+  nginx_http_port: "80",
   awx_operator: "0.11.0"  
-
-
 }
