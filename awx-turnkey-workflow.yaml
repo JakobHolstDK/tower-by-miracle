@@ -2,4 +2,8 @@
   success:
   - project: awx-turnkey
     always:
-      - job_template: awx-turnkey-on-venv
+      - job_template: awx-turnkey-on-kubernetes
+    success:
+     - project: awx-turnkey
+       always:
+        - job_template: awx-turnkey-on-venv

@@ -1,3 +1,16 @@
 {
-  awx-version: "19.1.0"
+  awx_image_version: "19.1.0",
+  awx_db_password: "thesecretdbpassword123",
+  postgres_host: "127.0.0.1",
+  postgres_post: "5432",
+  awx_install_database: "awx",
+  awx_install_pg_init_name: "miracle",
+  awx_install_redis_init_name: "miracle",
+  awx_install_cluster_host: "localhost",
+  nginx_disable_https: "True",
+  nginx_disable_hsts: "True",
+  nginx_http_port: "80"
+  awx_operator: "0.11.0"  
+
+
 }
