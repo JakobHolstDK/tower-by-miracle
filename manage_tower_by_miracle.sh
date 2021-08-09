@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
-sudo mkdir /opt/my-envs
-sudo chmod 0755 /opt/my-envs
-sudo chown awx:awx /opt/my-envs
-curl -X PATCH 'https://admin:ixj90j2s@localhost/api/v2/settings/system/'     -d '{"CUSTOM_VENV_PATHS": ["/opt/my-envs/"]}'  -H 'Content-Type:application/json' --insecure
+sudo mkdir /opt/my-envs         2>/dev/null
+sudo chmod 0755 /opt/my-envs    2>/dev/null
+sudo chown awx:awx /opt/my-envs 2>/dev/null
+
+#curl -X PATCH 'https://admin:ixj90j2s@localhost/api/v2/settings/system/'     -d '{"CUSTOM_VENV_PATHS": ["/opt/my-envs/"]}'  -H 'Content-Type:application/json' --insecure 2>/dev/null
+#exit 
+
 sudo virtualenv /opt/my-envs/awx-turnkey
 
 
 
-tower-cli user          create         --username miracle --password "ixj90j2s" --first-name "Tower" --email jho@miracle.dk --last-name "Miracle" --is-superuser False
+tower-cli user           create --username miracle --password "ixj90j2s" --first-name "Tower" --email jho@miracle.dk --last-name "Miracle" --is-superuser False
 
-tower-cli team           create         --name miracle                         --description "The ansible tower team" --organization miracle
+tower-cli team           create --name miracle                         --description "The ansible tower team" --organization miracle
 tower-cli organization   create --force-on-exists  --name miracle      --description "Miracle AS"
 tower-cli project        create --force-on-exists  --name  awx-turnkey --description "AWX turnkey installer by miracle and RPM's" --organization miracle --scm-type git --scm-url "https://github.com/JakobHolstDK/awx-turnkey.git" --scm-branch "master" --scm-clean TRUE --scm-delete-on-update TRUE --scm-update-on-launch TRUE --scm-update-cache-timeout 60 --job-timeout 600 --custom-virtualenv /opt/my-envs/awx-turnkey/
 
@@ -19,8 +22,10 @@ tower-cli role           grant  --type use --user miracle  --project awx-turnkey
 
 tower-cli inventory      delete  --name awx-turnkey
 tower-cli inventory      create  --name awx-turnkey --organization miracle --variables @awx-turnkey.json
+
 tower-cli host           create  --name centos8venv --description "the host for awx by miracle and virtual environments" -i awx-turnkey --enabled True 
 tower-cli host           create  --name minikube --description "the host for awx on k8s" -i awx-turnkey --enabled True 
+
 tower-cli group          create --name awx-turnkey-venv --description "Server to be deployed with awx on virtual environment" --inventory awx-turnkey
 tower-cli group          create --name awx-turnkey-k8s  --description "Server to be deployed with awx on kubernetes" --inventory awx-turnkey
 
@@ -53,6 +58,9 @@ tower-cli  workflow schema  awx-turnkey @awx-turnkey-workflow.yaml
 
 #tower-cli  schedule delete -n awx-turnkey-schedule
 #tower-cli  schedule create -n awx-turnkey-schedule --workflow awx-turnkey --enabled True --rrule "DTSTART;TZID=UTC:20210630T093758 RRULE:FREQ=MINUTELY;INTERVAL=5"
+
+
+JOBID=`tower-cli workflow_job launch -W awx-turnkey -f id`
 
 
 

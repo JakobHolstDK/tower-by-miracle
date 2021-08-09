@@ -13,6 +13,8 @@
   awx_operator: "0.11.0",
   awxpassword: "thesecretdbpassword123",
   postgreshost: "localhost",
-  postgresport: "5432"
-
+  postgresport: "5432",
+  secret_key: "Drskalbrstanget", 
+  awx_venv: "/var/awx/venv",
+  nodejsversion: "14.x"
 }
