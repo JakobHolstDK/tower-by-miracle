@@ -16,5 +16,5 @@
   postgresport: "5432",
   secret_key: "Drskalbrstanget", 
   awx_venv: "/var/awx/venv",
-  nodejsversion: "14.x"
+  nodejsversion: "v14.x"
 }
