@@ -24,12 +24,15 @@ tower-cli inventory      delete  --name awx-turnkey
 tower-cli inventory      create  --name awx-turnkey --organization miracle --variables @awx-turnkey.json
 
 tower-cli host           create  --name centos8venv --description "the host for awx by miracle and virtual environments" -i awx-turnkey --enabled True 
+tower-cli host           create  --name centos8scl --description "the host for awx by miracle and software collections" -i awx-turnkey --enabled True 
 tower-cli host           create  --name minikube --description "the host for awx on k8s" -i awx-turnkey --enabled True 
 
 tower-cli group          create --name awx-turnkey-venv --description "Server to be deployed with awx on virtual environment" --inventory awx-turnkey
+tower-cli group          create --name awx-turnkey-scl --description "Server to be deployed with awx with software collections" --inventory awx-turnkey
 tower-cli group          create --name awx-turnkey-k8s  --description "Server to be deployed with awx on kubernetes" --inventory awx-turnkey
 
 tower-cli host           associate  --host centos8venv --group awx-turnkey-venv
+tower-cli host           associate  --host centos8scl --group awx-turnkey-scl
 tower-cli host           associate  --host minikube    --group awx-turnkey-k8s
 
 tower-cli credential     delete  --name maas 
